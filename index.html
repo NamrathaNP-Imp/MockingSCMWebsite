@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/SampleReact/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>smaplereact</title>
+    <script type="module" crossorigin src="/SampleReact/assets/index-pbWcD9dk.js"></script>
+    <link rel="stylesheet" crossorigin href="/SampleReact/assets/index-DLV-73GM.css">
+  </head>
+  <body>
+          <!-- <main style="position: relative;"> -->
+	 <div id="iiris-identity" configId="f5701c3323cacc67c4aa16d853083cf8"></div>
+	  <!-- </main> -->
+    <!-- <div id="auth-container" style="margin-top: 50px;"></div> -->
+    <div id="root">
+    </div>
+
+    <script id="passport-loader" src="https://widgets-dev.iiris.com/iiris-passport/passport-loader.js"></script>
+    <script>
+		var showregistration = true;
+		function handleOnLoad() {
+			// Load passport-loader after SCM bundle
+			var head = document.getElementsByTagName("head")[0];
+			var script = document.createElement("script");
+			script.id = 'passport-loader';
+			// script.src = `${window.location.origin}/iiris-passport/passport-loader.js`;
+			script.src = `${window.location.origin}/dist/iiris-passport-loader.js`;
+			script.onload = () => {
+				console.log('Passport Loader Initialized');
+				// SDK will be available asynchronously after iiris-identity.js completes initialization
+				// Use polling to wait for it
+				waitForSDKAndRenderForm();
+			};
+			head.appendChild(script);
+
+			/**
+			 * Safely wait for SDK to be ready and render the AuthForm
+			 * Polls every 100ms with 10 second timeout protection
+			 */
+			function waitForSDKAndRenderForm() {
+				const maxWaitTime = 10000; // 10 seconds
+				const pollInterval = 100; // Check every 100ms
+				let elapsedTime = 0;
+				const authContainer = document.getElementById('auth-container');
+
+				if (!authContainer) {
+					console.warn('auth-container element not found');
+					return;
+				}
+
+				const pollTimer = setInterval(() => {
+					elapsedTime += pollInterval;
+
+					// Check if SDK is ready
+					if (window.IIRISPassport && typeof window.IIRISPassport.getRegistrationForm === 'function') {
+						clearInterval(pollTimer);
+						console.log('SDK Ready! Rendering AuthForm...');
+
+						try {
+							window.IIRISPassport.getRegistrationForm({
+								containerId: "auth-container",
+								responseType: "code"
+							});
+							console.log("✅ Unified Auth form rendered successfully.");
+						} catch (error) {
+							console.error("❌ Error rendering unified auth form:", error);
+							authContainer.innerHTML = '<div style="color: red; padding: 20px;">Error loading authentication form. Please refresh.</div>';
+						}
+						return;
+					}
+
+					// Timeout protection
+					if (elapsedTime >= maxWaitTime) {
+						clearInterval(pollTimer);
+						console.error('❌ SDK initialization timeout (10 seconds). SDK not available.');
+						console.log('window.IIRISPassport:', window.IIRISPassport);
+						authContainer.innerHTML = '<div style="color: red; padding: 20px;">Authentication form failed to load. Please refresh the page.</div>';
+					}
+				}, pollInterval);
+			}
+			
+			if (window.location.search) {
+				let queryParams = window.location.search.substring(1);
+				let searchItem = queryParams.split('&');
+				searchItem.map(e => {
+					let item = e.split('=');
+					if (item.length) {
+						document.getElementById("iiris-identity").setAttribute(item[0], item[1]);
+					}
+				})
+				var head = document.getElementsByTagName("head")[0];
+				var script = document.createElement("script");
+				script.src = "../iiris-identity.js";
+				head.appendChild(script);
+			}
+
+			let identityWidget = document.getElementById("iiris-identity");
+			
+			showregistration = !(identityWidget.getAttribute('showregistration') === "false");
+			if (identityWidget.getAttribute('ismodal') === "false") {
+				document.getElementById('w3-bg-img').style.display = "none";
+			}
+			document.getElementById('regBtn').style['display'] = showregistration ? 'inline' : 'none';
+			document.getElementById('loginBtn').style['display'] = showregistration ? 'inline' : 'none';
+		}
+
+		function register() {
+			document.getElementById('irisRegisterBtn').click()
+		}
+
+		function login() {
+			document.getElementById('irisLoginBtn').click()
+		}
+
+		function logout() {
+			document.getElementById('irisLogoutBtn').click()
+			document.getElementById('helloText').innerHTML = ''
+		}
+
+		function onViewContent() {
+			const refreshToken = getIIRISCookie("IRIS_HASH");
+        	const authTOken = getIIRISCookie("IRIS_AUTH");
+        	const appId = getIIRISCookie("IRIS_APPID");
+			window.open('http://crossdomain-sso-test.s3-website-us-east-1.amazonaws.com/#/dashboard?IRIS_AUTH='+authTOken+'&IRIS_HASH='+refreshToken+'&IRIS_APPID='+appId, '_blank');
+		}
+
+		//function to fetch/get cookie by cookie name
+		function getIIRISCookie(cname) {
+			let name = cname + "=";
+			let decodedCookie = decodeURIComponent(document.cookie);
+			let ca = decodedCookie.split(";");
+			for (let i = 0; i < ca.length; i++) {
+			let c = ca[i];
+			while (c.charAt(0) == " ") {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+			}
+			return "";
+      	}
+
+		function getInitials(name) {
+			var initials
+			var nameSplit = name.split(' ')
+			var nameLength = nameSplit.length
+			if (nameLength > 1) {
+				initials =
+					nameSplit[0].substring(0, 1) +
+					nameSplit[nameLength - 1].substring(0, 1)
+			} else if (nameLength === 1) {
+				initials = nameSplit[0].substring(0, 1)
+			} else return
+
+			return initials.toUpperCase()
+		}
+		
+		function irisProfileMgrCallback(obj) {
+			if (obj.user) {
+				var user = obj.user
+				if (showregistration) {
+					document.getElementById('regBtn').style['display'] = 'none'
+					document.getElementById('loginBtn').style['display'] = 'none'
+				}
+				document.getElementById('helloText').innerHTML =
+					'Hello, ' +
+					user.first_name +
+					' ' +
+					user.last_name
+				document.getElementById('avatar').style['display'] = 'inline'
+				document.getElementById('initials').innerHTML = getInitials(
+					user.first_name + ' ' + user.last_name
+				)
+				document.getElementById('logoutBtn').style['display'] = 'inline'
+				document.getElementById('logoutBtn').disabled = false;
+			}
+		}
+
+		function irisLoginCallback(obj) {
+			if (obj.user) {
+				var user = obj.user
+				if (showregistration) {
+					document.getElementById('regBtn').style['display'] = 'none'
+					document.getElementById('loginBtn').style['display'] = 'none'
+				}
+				document.getElementById('helloText').innerHTML =
+					'Hello, ' +
+					user.first_name +
+					' ' +
+					user.last_name
+				document.getElementById('avatar').style['display'] = 'inline'
+				document.getElementById('initials').innerHTML = getInitials(
+					user.first_name + ' ' + user.last_name
+				)
+				document.getElementById('logoutBtn').style['display'] = 'inline'
+				document.getElementById('logoutBtn').disabled = false;
+			}
+		}
+
+		function irisRegisterCallback(obj) {
+			if (obj.user) {
+				var user = obj.user
+				if (showregistration) {
+					document.getElementById('regBtn').style['display'] = 'none'
+					document.getElementById('loginBtn').style['display'] = 'none'
+				}
+				document.getElementById('helloText').innerHTML =
+					'Hello, ' +
+					user.first_name +
+					' ' +
+					user.last_name
+				document.getElementById('avatar').style['display'] = 'inline'
+				document.getElementById('initials').innerHTML = getInitials(
+					user.first_name + ' ' + user.last_name
+				)
+				document.getElementById('logoutBtn').style['display'] = 'inline'
+				document.getElementById('logoutBtn').disabled = false;
+			}
+		}
+	</script>
+  </body>
+</html>
