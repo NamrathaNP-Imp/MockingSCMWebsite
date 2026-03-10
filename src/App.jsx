@@ -1,47 +1,65 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vite.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.jsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
-
-// export default App
+import { useState, useEffect } from 'react'
 import "./App.css";
+import CircularProgress from '@mui/material/CircularProgress';
 
-function App() {
+const App = () => {
+  const [loading, setloading] = useState(true);
+  const waitForSDKAndRenderForm = () => {
+    const maxWaitTime = 10000; // 10 seconds
+    const pollInterval = 100; // Check every 100ms
+    let elapsedTime = 0;
+    const authContainer = document.getElementById('auth-container');
+    if (!authContainer) {
+      console.warn('auth-container element not found');
+      return;
+    }
+
+    const pollTimer = setInterval(async () => {
+      elapsedTime += pollInterval;
+
+      if (window.IIRISPassport && typeof window.IIRISPassport.getRegistrationForm === 'function') {
+        clearInterval(pollTimer);
+        console.log('SDK Ready! Rendering AuthForm...');
+
+        try {
+          const formHtml = await window.IIRISPassport.getRegistrationForm({
+            containerId: "auth-container",
+            responseType: "code"
+          });
+          console.log(formHtml);
+          // container.innerHTML = formHtml;
+          console.log("✅ Unified Auth form rendered successfully.");
+          setloading(false);
+        } catch (error) {
+          console.error("❌ Error rendering unified auth form:", error);
+          authContainer.innerHTML = '<div style="color: red; padding: 20px;">Error loading authentication form. Please refresh.</div>';
+          setloading(false);
+        }
+        return;
+      }
+
+      // Timeout protection
+      if (elapsedTime >= maxWaitTime) {
+        clearInterval(pollTimer);
+        console.error('❌ SDK initialization timeout (10 seconds). SDK not available.');
+        console.log('window.IIRISPassport:', window.IIRISPassport);
+        authContainer.innerHTML = '<div style="color: red; padding: 20px;">Authentication form failed to load. Please refresh the page.</div>';
+        setloading(false);
+      }
+    }, pollInterval);
+  }
+
+
+  useEffect(() => {
+    waitForSDKAndRenderForm();
+  }, []);
+
   return (
     <div className="container">
       <div className="banner">
-            <h2>Nation's Restaurant News</h2>
-            <p>Webinar</p>
-          </div>
+        <h2>Nation's Restaurant News</h2>
+        <p>Webinar</p>
+      </div>
       <div className="layout">
 
         {/* LEFT COLUMN */}
@@ -92,7 +110,11 @@ function App() {
 
         {/* RIGHT COLUMN */}
         <div className="right">
-          <div id="auth-container"></div>
+          {loading == true &&
+            <CircularProgress />
+          }
+          <div id="auth-container">
+          </div>
         </div>
 
       </div>
