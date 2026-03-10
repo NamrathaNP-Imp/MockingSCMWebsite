@@ -111,7 +111,9 @@ const App = () => {
         {/* RIGHT COLUMN */}
         <div className="right">
           {loading == true &&
+          <div className='rightLoader'>
             <CircularProgress />
+            </div>
           }
           <div id="auth-container">
           </div>

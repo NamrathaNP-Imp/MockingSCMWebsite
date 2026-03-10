@@ -139,6 +139,9 @@ ul {
   align-content: center;
   text-align: start;
 }
+.rightLoader{
+  text-align: center;
+}
 
 .form {
   display: flex;
