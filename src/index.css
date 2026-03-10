@@ -137,6 +137,7 @@ ul {
   padding: 25px;
   border: 1px solid #eee; */
   align-content: center;
+  text-align: start;
 }
 
 .form {
