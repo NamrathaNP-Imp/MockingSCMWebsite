@@ -105,14 +105,15 @@ const App = () => {
   }, []);
 
   const handleBack = () => {
-    setLoggedin(false);
+    // setLoggedin(false);
+    window.location.reload();
   }
-  useEffect(() => {
-    if (isloggedin == false && userName != '') {
-      waitForSDKAndRenderForm();
-      setUserName('');
-    }
-  }, [isloggedin]);
+  // useEffect(() => {
+  //   if (isloggedin == false && userName != '') {
+  //     waitForSDKAndRenderForm();
+  //     setUserName('');
+  //   }
+  // }, [isloggedin]);
 
 
   return (
