@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 
-body {
+/* body {
   font-family:
     "Inter",
     -apple-system,
@@ -13,7 +13,7 @@ body {
     sans-serif;
   background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
   color: #e2e8f0;
-}
+} */
 
 .dashboard {
   display: flex;
