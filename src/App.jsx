@@ -6,7 +6,7 @@ import { Snackbar } from '@mui/material';
 const App = () => {
   const [loading, setloading] = useState(true);
   const [isloggedin, setLoggedin]= useState(false);
-  const [showToast, setToastData] = useState < any > ({
+  const [showToast, setToastData] = useState ({
     show: false,
     message: '',
   });
