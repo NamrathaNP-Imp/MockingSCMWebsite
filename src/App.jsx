@@ -45,7 +45,6 @@ const App = () => {
             responseType: "code"
           });
           console.log(formHtml);
-          console.log("window.IIRISPassport?.irisLoginCallback",window.IIRISPassport?.irisLoginCallback);
           // container.innerHTML = formHtml;
           console.log("✅ Unified Auth form rendered successfully.");
           setloading(false);
@@ -73,14 +72,13 @@ const App = () => {
     waitForSDKAndRenderForm();
     const interval = setInterval(() => {
     const logindata = window.IIRISPassport.irisLoginCallback;
-    console.log("logindata",logindata,window.IIRISPassport.irisLoginCallback,window.IIRISPassport)
 
     if (logindata?.success) {
       setToastData({
         show: true,
-        message: logindata.data?.message||logindata.error?.message ,
+        message: logindata.data?.message||logindata.error?.message || "User logged in Successfully",
       });
-      console.log("Detected login response", data);
+      console.log("Detected login response", logindata);
       setLoggedin(true);
       setUserName(logindata.data?.user || '')
       clearInterval(interval);
@@ -92,7 +90,7 @@ const App = () => {
     if(registerData?.success){
       setToastData({
         show: true,
-        message: registerData.data?.message||registerData.error?.message ,
+        message: registerData.data?.message||registerData.error?.message || "User registered Successfully" ,
       });
       clearInterval(intervalR);
     }
