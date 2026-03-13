@@ -72,27 +72,27 @@ const App = () => {
   useEffect(() => {
     waitForSDKAndRenderForm();
     const interval = setInterval(() => {
-    const logindata = window.IIRISPassport?.irisLoginResponse;
-    console.log("logindata",logindata)
+    const logindata = window.IIRISPassport.irisLoginCallback;
+    console.log("logindata",logindata,window.IIRISPassport.irisLoginCallback,window.IIRISPassport)
 
     if (logindata?.success) {
       setToastData({
         show: true,
-        message: window.IIRISPassport?.irisLoginCallback?.data?.message||window.IIRISPassport?.irisLoginCallback?.error?.message ,
+        message: logindata.data?.message||logindata.error?.message ,
       });
       console.log("Detected login response", data);
       setLoggedin(true);
-      setUserName(window.IIRISPassport?.irisLoginCallback?.data?.user || '')
+      setUserName(logindata.data?.user || '')
       clearInterval(interval);
     }
-  }, 500);
+  }, 700);
    const intervalR = setInterval(() => {
-    const registerData = window.IIRISPassport?.irisRegisterCallback
+    const registerData = window.IIRISPassport.irisRegisterCallback
     
     if(registerData?.success){
       setToastData({
         show: true,
-        message: window.IIRISPassport?.irisRegisterCallback?.data?.message||window.IIRISPassport?.irisRegisterCallback?.error?.message ,
+        message: registerData.data?.message||registerData.error?.message ,
       });
       clearInterval(intervalR);
     }
