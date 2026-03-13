@@ -105,6 +105,11 @@ const App = () => {
   }
   }, []);
 
+  const handleBack = () =>{
+    setLoggedin(false);
+     waitForSDKAndRenderForm();
+  }
+
 
 //   useEffect(() => {
 //    const intervalR = setInterval(() => {
@@ -146,7 +151,7 @@ const App = () => {
   return (
     <div className="container">
       {isloggedin ? <>
-        <Dashboard userName={userName} onBack={()=>setLoggedin(false)}/>
+        <Dashboard user={userName} onBack={handleBack}/>
       </>: 
       <>
       <div className="banner">
