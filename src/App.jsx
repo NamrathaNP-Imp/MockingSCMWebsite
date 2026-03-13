@@ -71,12 +71,9 @@ const App = () => {
 
   useEffect(() => {
     waitForSDKAndRenderForm();
-  }, []);
-
-
-  useEffect(() => {
-  const interval = setInterval(() => {
+    const interval = setInterval(() => {
     const logindata = window.IIRISPassport?.irisLoginResponse;
+    console.log("logindata",logindata)
 
     if (logindata?.success) {
       setToastData({
@@ -88,13 +85,8 @@ const App = () => {
       setUserName(window.IIRISPassport?.irisLoginCallback?.data?.user || '')
       clearInterval(interval);
     }
-  }, 300);
-
-  return () => clearInterval(interval);
-}, []);
-
-  useEffect(() => {
-  const interval = setInterval(() => {
+  }, 500);
+   const intervalR = setInterval(() => {
     const registerData = window.IIRISPassport?.irisRegisterCallback
     
     if(registerData?.success){
@@ -102,12 +94,53 @@ const App = () => {
         show: true,
         message: window.IIRISPassport?.irisRegisterCallback?.data?.message||window.IIRISPassport?.irisRegisterCallback?.error?.message ,
       });
-      clearInterval(interval);
+      clearInterval(intervalR);
     }
-  }, 300);
+  }, 500);
 
-  return () => clearInterval(interval);
-}, []);
+
+  return () => {
+    clearInterval(interval);
+    clearInterval(intervalR);
+  }
+  }, []);
+
+
+//   useEffect(() => {
+//    const intervalR = setInterval(() => {
+//     const registerData = window.IIRISPassport?.irisRegisterCallback
+    
+//     if(registerData?.success){
+//       setToastData({
+//         show: true,
+//         message: window.IIRISPassport?.irisRegisterCallback?.data?.message||window.IIRISPassport?.irisRegisterCallback?.error?.message ,
+//       });
+//       clearInterval(intervalR);
+//     }
+//   }, 500);
+
+
+//   return () => {
+//     clearInterval(interval);
+//     clearInterval(intervalR);
+//   }
+// }, []);
+
+//   useEffect(() => {
+//   const interval = setInterval(() => {
+//     const registerData = window.IIRISPassport?.irisRegisterCallback
+    
+//     if(registerData?.success){
+//       setToastData({
+//         show: true,
+//         message: window.IIRISPassport?.irisRegisterCallback?.data?.message||window.IIRISPassport?.irisRegisterCallback?.error?.message ,
+//       });
+//       clearInterval(interval);
+//     }
+//   }, 500);
+
+//   return () => clearInterval(interval);
+// }, []);
   
 
   return (
