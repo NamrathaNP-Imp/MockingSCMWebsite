@@ -29,7 +29,6 @@ const App = () => {
     const authContainer = document.getElementById('auth-container');
     if (!authContainer) {
       console.warn('auth-container element not found');
-      setTimeout(waitForSDKAndRenderForm, 100);
       return;
     }
 
@@ -110,7 +109,7 @@ const App = () => {
     setLoggedin(false);
   }
   useEffect(() => {
-  if (isloggedin == false) {
+  if (isloggedin == false && userName != '') {
     waitForSDKAndRenderForm();
   }
 }, [isloggedin]);
