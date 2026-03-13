@@ -45,6 +45,7 @@ const App = () => {
             responseType: "code"
           });
           console.log(formHtml);
+          console.log("window.IIRISPassport?.irisLoginCallback",window.IIRISPassport?.irisLoginCallback);
           // container.innerHTML = formHtml;
           console.log("✅ Unified Auth form rendered successfully.");
           setloading(false);
@@ -72,33 +73,42 @@ const App = () => {
     waitForSDKAndRenderForm();
   }, []);
 
-  useEffect(()=>{
-    console.log(window.IIRISPassport?.irisLoginCallback);
-    if (window.IIRISPassport &&  window.IIRISPassport?.irisLoginCallback?.success) {
-      console.log(window.IIRISPassport?.irisLoginCallback)
-       setToastData({
+
+  useEffect(() => {
+  const interval = setInterval(() => {
+    const logindata = window.IIRISPassport?.irisLoginResponse;
+
+    if (logindata?.success) {
+      setToastData({
         show: true,
         message: window.IIRISPassport?.irisLoginCallback?.data?.message||window.IIRISPassport?.irisLoginCallback?.error?.message ,
       });
-      if(window.IIRISPassport?.irisLoginCallback.success == true){
-        setLoggedin(true);
-        setUserName(window.IIRISPassport?.irisLoginCallback?.data?.user)
-      }
+      console.log("Detected login response", data);
+      setLoggedin(true);
+      setUserName(window.IIRISPassport?.irisLoginCallback?.data?.user || '')
+      clearInterval(interval);
     }
+  }, 300);
 
-  },[window.IIRISPassport?.irisLoginCallback])
+  return () => clearInterval(interval);
+}, []);
 
-  useEffect(()=>{
-    if (window.IIRISPassport &&  window.IIRISPassport?.irisRegisterCallback?.success) {
-      console.log(window.IIRISPassport?.irisRegisterCallback)
-       setToastData({
+  useEffect(() => {
+  const interval = setInterval(() => {
+    const registerData = window.IIRISPassport?.irisRegisterCallback
+    
+    if(registerData?.success){
+      setToastData({
         show: true,
         message: window.IIRISPassport?.irisRegisterCallback?.data?.message||window.IIRISPassport?.irisRegisterCallback?.error?.message ,
       });
+      clearInterval(interval);
     }
+  }, 300);
 
-  },[window.IIRISPassport?.irisRegisterCallback ])
-
+  return () => clearInterval(interval);
+}, []);
+  
 
   return (
     <div className="container">
