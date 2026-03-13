@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react'
 import "./App.css";
 import CircularProgress from '@mui/material/CircularProgress';
 import { Snackbar } from '@mui/material';
+import Dashboard from './Dashboard';
 
 const App = () => {
   const [loading, setloading] = useState(true);
   const [isloggedin, setLoggedin]= useState(false);
+  const [userName, setUserName] = useState('');
   const [showToast, setToastData] = useState ({
     show: false,
     message: '',
@@ -71,7 +73,7 @@ const App = () => {
   }, []);
 
   useEffect(()=>{
-    if (window.IIRISPassport &&  window.IIRISPassport?.irisLoginCallback === 'function' && window.IIRISPassport?.irisLoginCallback?.success) {
+    if (window.IIRISPassport &&  window.IIRISPassport?.irisLoginCallback?.success) {
       console.log(window.IIRISPassport?.irisLoginCallback)
        setToastData({
         show: true,
@@ -79,13 +81,14 @@ const App = () => {
       });
       if(window.IIRISPassport?.irisLoginCallback.success == true){
         setLoggedin(true);
+        setUserName(window.IIRISPassport?.irisLoginCallback?.data?.user)
       }
     }
 
   },[window.IIRISPassport?.irisLoginCallback ])
 
   useEffect(()=>{
-    if (window.IIRISPassport &&  window.IIRISPassport?.irisRegisterCallback === 'function' && window.IIRISPassport?.irisRegisterCallback?.success) {
+    if (window.IIRISPassport &&  window.IIRISPassport?.irisRegisterCallback?.success) {
       console.log(window.IIRISPassport?.irisRegisterCallback)
        setToastData({
         show: true,
@@ -99,7 +102,7 @@ const App = () => {
   return (
     <div className="container">
       {isloggedin ? <>
-        <p>LOGGED IN</p>
+        <Dashboard userName={userName}/>
       </>: 
       <>
       <div className="banner">
