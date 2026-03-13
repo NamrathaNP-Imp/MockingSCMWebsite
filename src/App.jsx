@@ -66,7 +66,8 @@ const App = () => {
       }
     }, pollInterval);
   }
-  const onloadCalls = () => {
+
+  useEffect(() => {
     waitForSDKAndRenderForm();
     const interval = setInterval(() => {
       const logindata = window.IIRISPassport.irisLoginCallback;
@@ -95,10 +96,7 @@ const App = () => {
         clearInterval(intervalR);
       }
     }, 500);
-  }
 
-  useEffect(() => {
-    onloadCalls();
 
     return () => {
       clearInterval(interval);
@@ -111,7 +109,8 @@ const App = () => {
   }
   useEffect(() => {
     if (isloggedin == false && userName != '') {
-      onloadCalls();
+      waitForSDKAndRenderForm();
+      setUserName('');
     }
   }, [isloggedin]);
 
