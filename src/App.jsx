@@ -29,6 +29,7 @@ const App = () => {
     const authContainer = document.getElementById('auth-container');
     if (!authContainer) {
       console.warn('auth-container element not found');
+      setTimeout(waitForSDKAndRenderForm, 100);
       return;
     }
 
@@ -107,49 +108,12 @@ const App = () => {
 
   const handleBack = () =>{
     setLoggedin(false);
-    const authContainer = document.getElementById('auth-container');
-    console.log(authContainer);
-    if (!authContainer) {
-      waitForSDKAndRenderForm();
-    }
   }
-
-
-//   useEffect(() => {
-//    const intervalR = setInterval(() => {
-//     const registerData = window.IIRISPassport?.irisRegisterCallback
-    
-//     if(registerData?.success){
-//       setToastData({
-//         show: true,
-//         message: window.IIRISPassport?.irisRegisterCallback?.data?.message||window.IIRISPassport?.irisRegisterCallback?.error?.message ,
-//       });
-//       clearInterval(intervalR);
-//     }
-//   }, 500);
-
-
-//   return () => {
-//     clearInterval(interval);
-//     clearInterval(intervalR);
-//   }
-// }, []);
-
-//   useEffect(() => {
-//   const interval = setInterval(() => {
-//     const registerData = window.IIRISPassport?.irisRegisterCallback
-    
-//     if(registerData?.success){
-//       setToastData({
-//         show: true,
-//         message: window.IIRISPassport?.irisRegisterCallback?.data?.message||window.IIRISPassport?.irisRegisterCallback?.error?.message ,
-//       });
-//       clearInterval(interval);
-//     }
-//   }, 500);
-
-//   return () => clearInterval(interval);
-// }, []);
+  useEffect(() => {
+  if (!isloggedin) {
+    waitForSDKAndRenderForm();
+  }
+}, [isloggedin]);
   
 
   return (
