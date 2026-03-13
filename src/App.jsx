@@ -71,29 +71,29 @@ const App = () => {
   }, []);
 
   useEffect(()=>{
-    if (window.IIRISPassport &&  window.IIRISPassport.irisLoginCallback === 'function' && window.IIRISPassport.irisLoginCallback.success) {
-      console.log(window.IIRISPassport.irisLoginCallback)
+    if (window.IIRISPassport &&  window.IIRISPassport?.irisLoginCallback === 'function' && window.IIRISPassport?.irisLoginCallback?.success) {
+      console.log(window.IIRISPassport?.irisLoginCallback)
        setToastData({
         show: true,
-        message: window.IIRISPassport.irisLoginCallback?.data?.message||window.IIRISPassport.irisLoginCallback?.error?.message ,
+        message: window.IIRISPassport?.irisLoginCallback?.data?.message||window.IIRISPassport?.irisLoginCallback?.error?.message ,
       });
-      if(window.IIRISPassport.irisLoginCallback.success == true){
+      if(window.IIRISPassport?.irisLoginCallback.success == true){
         setLoggedin(true);
       }
     }
 
-  },[window.IIRISPassport.irisLoginCallback ])
+  },[window.IIRISPassport?.irisLoginCallback ])
 
   useEffect(()=>{
-    if (window.IIRISPassport &&  window.IIRISPassport.irisRegisterCallback === 'function' && window.IIRISPassport.irisRegisterCallback.success) {
-      console.log(window.IIRISPassport.irisRegisterCallback)
+    if (window.IIRISPassport &&  window.IIRISPassport?.irisRegisterCallback === 'function' && window.IIRISPassport?.irisRegisterCallback?.success) {
+      console.log(window.IIRISPassport?.irisRegisterCallback)
        setToastData({
         show: true,
-        message: window.IIRISPassport.irisRegisterCallback?.data?.message||window.IIRISPassport.irisRegisterCallback?.error?.message ,
+        message: window.IIRISPassport?.irisRegisterCallback?.data?.message||window.IIRISPassport?.irisRegisterCallback?.error?.message ,
       });
     }
 
-  },[window.IIRISPassport.irisRegisterCallback ])
+  },[window.IIRISPassport?.irisRegisterCallback ])
 
 
   return (
