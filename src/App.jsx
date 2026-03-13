@@ -108,6 +108,7 @@ const App = () => {
   const handleBack = () =>{
     setLoggedin(false);
     const authContainer = document.getElementById('auth-container');
+    console.log(authContainer);
     if (!authContainer) {
       waitForSDKAndRenderForm();
     }
@@ -153,7 +154,7 @@ const App = () => {
 
   return (
     <div className="container">
-      {isloggedin ? <>
+      {isloggedin == true ? <>
         <Dashboard user={userName} onBack={handleBack}/>
       </>: 
       <>
