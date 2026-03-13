@@ -144,7 +144,7 @@ const App = () => {
   return (
     <div className="container">
       {isloggedin ? <>
-        <Dashboard userName={userName}/>
+        <Dashboard userName={userName} onBack={()=>setLoggedin(false)}/>
       </>: 
       <>
       <div className="banner">
