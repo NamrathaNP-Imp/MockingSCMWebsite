@@ -1,9 +1,25 @@
 import { useState, useEffect } from 'react'
 import "./App.css";
 import CircularProgress from '@mui/material/CircularProgress';
+import { Snackbar } from '@mui/material';
 
 const App = () => {
   const [loading, setloading] = useState(true);
+  const [isloggedin, setLoggedin]= useState(false);
+  const [showToast, setToastData] = useState < any > ({
+    show: false,
+    message: '',
+  });
+
+
+  const resetToast = () => {
+    setTimeout(() => {
+      setToastData({
+        show: false,
+        message: null,
+      });
+    }, 2000);
+  }
   const waitForSDKAndRenderForm = () => {
     const maxWaitTime = 10000; // 10 seconds
     const pollInterval = 100; // Check every 100ms
@@ -54,8 +70,38 @@ const App = () => {
     waitForSDKAndRenderForm();
   }, []);
 
+  useEffect(()=>{
+    if (window.IIRISPassport &&  window.IIRISPassport.irisLoginCallback === 'function' && window.IIRISPassport.irisLoginCallback.success) {
+      console.log(window.IIRISPassport.irisLoginCallback)
+       setToastData({
+        show: true,
+        message: window.IIRISPassport.irisLoginCallback?.data?.message||window.IIRISPassport.irisLoginCallback?.error?.message ,
+      });
+      if(window.IIRISPassport.irisLoginCallback.success == true){
+        setLoggedin(true);
+      }
+    }
+
+  },[window.IIRISPassport.irisLoginCallback ])
+
+  useEffect(()=>{
+    if (window.IIRISPassport &&  window.IIRISPassport.irisRegisterCallback === 'function' && window.IIRISPassport.irisRegisterCallback.success) {
+      console.log(window.IIRISPassport.irisRegisterCallback)
+       setToastData({
+        show: true,
+        message: window.IIRISPassport.irisRegisterCallback?.data?.message||window.IIRISPassport.irisRegisterCallback?.error?.message ,
+      });
+    }
+
+  },[window.IIRISPassport.irisRegisterCallback ])
+
+
   return (
     <div className="container">
+      {isloggedin ? <>
+        <p>LOGGED IN</p>
+      </>: 
+      <>
       <div className="banner">
         <h2>Nation's Restaurant News</h2>
         <p>Webinar</p>
@@ -120,6 +166,13 @@ const App = () => {
         </div>
 
       </div>
+      </>
+      }
+      {showToast.show ? <Snackbar
+        open={showToast.show }
+        autoHideDuration={3000}
+        message={showToast.message }
+      />: null}
     </div>
   );
 }
