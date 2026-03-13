@@ -78,6 +78,7 @@ const App = () => {
         show: true,
         message: logindata.data?.message||logindata.error?.message || "User logged in Successfully",
       });
+      resetToast();
       console.log("Detected login response", logindata);
       setLoggedin(true);
       setUserName(logindata.data?.user || '')
@@ -92,6 +93,7 @@ const App = () => {
         show: true,
         message: registerData.data?.message||registerData.error?.message || "User registered Successfully" ,
       });
+      resetToast();
       clearInterval(intervalR);
     }
   }, 500);
@@ -215,7 +217,7 @@ const App = () => {
       }
       {showToast.show ? <Snackbar
         open={showToast.show }
-        autoHideDuration={3000}
+        autoHideDuration={2000}
         message={showToast.message }
       />: null}
     </div>
