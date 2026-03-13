@@ -110,7 +110,7 @@ const App = () => {
     setLoggedin(false);
   }
   useEffect(() => {
-  if (!isloggedin) {
+  if (isloggedin == false) {
     waitForSDKAndRenderForm();
   }
 }, [isloggedin]);
