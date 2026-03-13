@@ -73,6 +73,7 @@ const App = () => {
   }, []);
 
   useEffect(()=>{
+    console.log(window.IIRISPassport?.irisLoginCallback);
     if (window.IIRISPassport &&  window.IIRISPassport?.irisLoginCallback?.success) {
       console.log(window.IIRISPassport?.irisLoginCallback)
        setToastData({
@@ -85,7 +86,7 @@ const App = () => {
       }
     }
 
-  },[window.IIRISPassport?.irisLoginCallback ])
+  },[window.IIRISPassport?.irisLoginCallback])
 
   useEffect(()=>{
     if (window.IIRISPassport &&  window.IIRISPassport?.irisRegisterCallback?.success) {
