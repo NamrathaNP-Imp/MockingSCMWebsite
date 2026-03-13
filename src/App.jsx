@@ -107,7 +107,10 @@ const App = () => {
 
   const handleBack = () =>{
     setLoggedin(false);
-     waitForSDKAndRenderForm();
+    const authContainer = document.getElementById('auth-container');
+    if (!authContainer) {
+      waitForSDKAndRenderForm();
+    }
   }
 
 
