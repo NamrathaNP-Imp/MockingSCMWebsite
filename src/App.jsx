@@ -108,8 +108,24 @@ const App = () => {
     const handleIrisEvent = (event) => {
       if (event.detail.type === "login") {
         const { success, ...data } = event.detail.payload;
-        if (success) console.log("success--", data);
-        else console.log("success--", data.error);
+        console.log("success--",  event,detail, success, data);
+        if (success){
+        setToastData({
+          show: true,
+          message: logindata.data?.message || logindata.error?.message || "User logged in Successfully",
+        });
+        resetToast();
+        console.log("Detected login response", logindata);
+        setLoggedin(true);
+        setUserName(logindata.data?.user || '')
+        } 
+        else{
+          setToastData({
+          show: true,
+          message: logindata.data?.message || logindata.error?.message || "User logged in Successfully",
+        });
+    resetToast();
+        } 
       }
     };
  
