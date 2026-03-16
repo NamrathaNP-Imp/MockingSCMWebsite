@@ -136,7 +136,7 @@ const App = () => {
           message: signupdata.data?.message || "User signed in Successfully",
         });
         resetToast();
-        console.log("Detected signin response", logisignupdatandata);
+        console.log("Detected signin response", signupdata);
         // setLoggedin(true);
         // setUserName(signupdata.data?.user || '')
         } 
