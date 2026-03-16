@@ -107,13 +107,12 @@ const App = () => {
   useEffect(() => {
     const handleIrisEvent = (event) => {
       if (event.detail.type === "login") {
-        const { success, ...data } = event.detail.payload;
-        console.log("success--",  event.detail, success, data);
-        const logindata = event.detail.payload;
+        const { success, ...logindata } = event.detail.payload;
+        console.log("success--",  event.detail, success, logindata);
         if (success){
         setToastData({
           show: true,
-          message: logindata.data?.message || logindata.error?.message || "User logged in Successfully",
+          message: logindata.data?.message || "User logged in Successfully",
         });
         resetToast();
         console.log("Detected login response", logindata);
@@ -123,7 +122,28 @@ const App = () => {
         else{
           setToastData({
           show: true,
-          message: logindata.data?.message || logindata.error?.message || "User logged in Successfully",
+          message: logindata.error?.message ,
+        });
+    resetToast();
+        } 
+      }
+      else if (event.detail.type === "signup") {
+        const { success, ...signupdata } = event.detail.payload;
+        console.log("success--",  event.detail, success, signupdata);
+        if (success){
+        setToastData({
+          show: true,
+          message: signupdata.data?.message || "User signed in Successfully",
+        });
+        resetToast();
+        console.log("Detected signin response", logisignupdatandata);
+        setLoggedin(true);
+        setUserName(signupdata.data?.user || '')
+        } 
+        else{
+          setToastData({
+          show: true,
+          message: signupdata.error?.message ,
         });
     resetToast();
         } 
