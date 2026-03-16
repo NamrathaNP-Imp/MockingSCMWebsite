@@ -124,7 +124,7 @@ const App = () => {
           show: true,
           message: logindata.error?.message ,
         });
-    resetToast();
+        resetToast();
         } 
       }
       else if (event.detail.type === "signup") {
@@ -137,15 +137,15 @@ const App = () => {
         });
         resetToast();
         console.log("Detected signin response", logisignupdatandata);
-        setLoggedin(true);
-        setUserName(signupdata.data?.user || '')
+        // setLoggedin(true);
+        // setUserName(signupdata.data?.user || '')
         } 
         else{
           setToastData({
           show: true,
           message: signupdata.error?.message ,
         });
-    resetToast();
+        resetToast();
         } 
       }
     };
