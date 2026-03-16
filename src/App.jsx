@@ -69,40 +69,54 @@ const App = () => {
 
   useEffect(() => {
     waitForSDKAndRenderForm();
-    const interval = setInterval(() => {
-      const logindata = window.IIRISPassport.irisLoginCallback;
+    // const interval = setInterval(() => {
+    //   const logindata = window.IIRISPassport.irisLoginCallback;
 
-      if (logindata?.success) {
-        setToastData({
-          show: true,
-          message: logindata.data?.message || logindata.error?.message || "User logged in Successfully",
-        });
-        resetToast();
-        console.log("Detected login response", logindata);
-        setLoggedin(true);
-        setUserName(logindata.data?.user || '')
-        clearInterval(interval);
-      }
-    }, 700);
-    const intervalR = setInterval(() => {
-      const registerData = window.IIRISPassport.irisRegisterCallback
+    //   if (logindata?.success) {
+    //     setToastData({
+    //       show: true,
+    //       message: logindata.data?.message || logindata.error?.message || "User logged in Successfully",
+    //     });
+    //     resetToast();
+    //     console.log("Detected login response", logindata);
+    //     setLoggedin(true);
+    //     setUserName(logindata.data?.user || '')
+    //     clearInterval(interval);
+    //   }
+    // }, 700);
+    // const intervalR = setInterval(() => {
+    //   const registerData = window.IIRISPassport.irisRegisterCallback
 
-      if (registerData?.success) {
-        setToastData({
-          show: true,
-          message: registerData.data?.message || registerData.error?.message || "User registered Successfully",
-        });
-        resetToast();
-        clearInterval(intervalR);
-      }
-    }, 500);
+    //   if (registerData?.success) {
+    //     setToastData({
+    //       show: true,
+    //       message: registerData.data?.message || registerData.error?.message || "User registered Successfully",
+    //     });
+    //     resetToast();
+    //     clearInterval(intervalR);
+    //   }
+    // }, 500);
 
 
-    return () => {
-      clearInterval(interval);
-      clearInterval(intervalR);
-    }
+    // return () => {
+    //   clearInterval(interval);
+    //   clearInterval(intervalR);
+    // }
   }, []);
+
+  useEffect(() => {
+    const handleIrisEvent = (event) => {
+      if (event.detail.type === "login") {
+        const { success, ...data } = event.detail.payload;
+        if (success) console.log("success--", data);
+        else console.log("success--", data.error);
+      }
+    };
+ 
+    window.addEventListener("irisAuthEvent", handleIrisEvent);
+    return () => window.removeEventListener("irisAuthEvent", handleIrisEvent);
+  }, []);
+ 
 
   const handleBack = () => {
     // setLoggedin(false);
