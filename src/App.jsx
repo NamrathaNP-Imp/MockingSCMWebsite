@@ -108,7 +108,7 @@ const App = () => {
     const handleIrisEvent = (event) => {
       if (event.detail.type === "login") {
         const { success, ...data } = event.detail.payload;
-        console.log("success--",  event,detail, success, data);
+        console.log("success--",  event.detail, success, data);
         if (success){
         setToastData({
           show: true,
