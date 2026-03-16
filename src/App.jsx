@@ -109,6 +109,7 @@ const App = () => {
       if (event.detail.type === "login") {
         const { success, ...data } = event.detail.payload;
         console.log("success--",  event.detail, success, data);
+        const logindata = event.detail.payload;
         if (success){
         setToastData({
           show: true,
