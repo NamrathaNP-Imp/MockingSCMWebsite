@@ -68,7 +68,7 @@ const App = () => {
   }
 
   useEffect(() => {
-    waitForSDKAndRenderForm();
+    // waitForSDKAndRenderForm();
     // const interval = setInterval(() => {
     //   const logindata = window.IIRISPassport.irisLoginCallback;
 
