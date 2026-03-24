@@ -28,25 +28,17 @@ const App = () => {
     let elapsedTime = 0;
     const authContainer = document.getElementById('auth-container');
     if (!authContainer) {
-      console.warn('auth-container element not found');
       return;
     }
-
     const pollTimer = setInterval(async () => {
       elapsedTime += pollInterval;
-
       if (window.IIRISPassport && typeof window.IIRISPassport.getRegistrationForm === 'function') {
         clearInterval(pollTimer);
-        console.log('SDK Ready! Rendering AuthForm...');
-
         try {
-          const formHtml = await window.IIRISPassport.getRegistrationForm({
+          await window.IIRISPassport.getRegistrationForm({
             containerId: "auth-container",
             responseType: "code"
           });
-          console.log(formHtml);
-          // container.innerHTML = formHtml;
-          console.log("✅ Unified Auth form rendered successfully.");
           setloading(false);
         } catch (error) {
           console.error("❌ Error rendering unified auth form:", error);
@@ -55,12 +47,8 @@ const App = () => {
         }
         return;
       }
-
-      // Timeout protection
       if (elapsedTime >= maxWaitTime) {
         clearInterval(pollTimer);
-        console.error('❌ SDK initialization timeout (10 seconds). SDK not available.');
-        console.log('window.IIRISPassport:', window.IIRISPassport);
         authContainer.innerHTML = '<div style="color: red; padding: 20px;">Authentication form failed to load. Please refresh the page.</div>';
         setloading(false);
       }
@@ -69,39 +57,7 @@ const App = () => {
 
   useEffect(() => {
     // waitForSDKAndRenderForm();
-    // const interval = setInterval(() => {
-    //   const logindata = window.IIRISPassport.irisLoginCallback;
-
-    //   if (logindata?.success) {
-    //     setToastData({
-    //       show: true,
-    //       message: logindata.data?.message || logindata.error?.message || "User logged in Successfully",
-    //     });
-    //     resetToast();
-    //     console.log("Detected login response", logindata);
-    //     setLoggedin(true);
-    //     setUserName(logindata.data?.user || '')
-    //     clearInterval(interval);
-    //   }
-    // }, 700);
-    // const intervalR = setInterval(() => {
-    //   const registerData = window.IIRISPassport.irisRegisterCallback
-
-    //   if (registerData?.success) {
-    //     setToastData({
-    //       show: true,
-    //       message: registerData.data?.message || registerData.error?.message || "User registered Successfully",
-    //     });
-    //     resetToast();
-    //     clearInterval(intervalR);
-    //   }
-    // }, 500);
-
-
-    // return () => {
-    //   clearInterval(interval);
-    //   clearInterval(intervalR);
-    // }
+    setloading(false);
   }, []);
 
   useEffect(() => {
