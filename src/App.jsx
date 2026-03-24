@@ -56,8 +56,8 @@ const App = () => {
   }
 
   useEffect(() => {
-    // waitForSDKAndRenderForm();
-    setloading(false);
+    waitForSDKAndRenderForm();
+    // setloading(false);
   }, []);
 
   useEffect(() => {
