@@ -2,7 +2,7 @@
   "name": "smaplereact",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://namrathanp-imp.github.io/SampleReact",
+  "homepage": "https://namrathanp-imp.github.io/MockingSCMWebsite/",
   "type": "module",
   "scripts": {
     "dev": "vite",
