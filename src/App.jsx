@@ -55,9 +55,13 @@ const App = () => {
     }, pollInterval);
   }
 
-  useEffect(() => {
-    waitForSDKAndRenderForm();
-    // setloading(false);
+  useEffect(async() => {
+    // waitForSDKAndRenderForm();
+    setloading(false);
+    await window.IIRISPassport.getRegistrationForm({
+      containerId: "auth-container",
+      responseType: "code",
+    });
   }, []);
 
   useEffect(() => {
