@@ -5,7 +5,7 @@ import { Snackbar } from '@mui/material';
 import Dashboard from './Dashboard';
 
 const App = () => {
-  const [loading, setloading] = useState(true);
+  const [loading, setloading] = useState(false);
   const [isloggedin, setLoggedin] = useState(false);
   const [userName, setUserName] = useState('');
   const [showToast, setToastData] = useState({
@@ -57,12 +57,19 @@ const App = () => {
 
   useEffect(async() => {
     // waitForSDKAndRenderForm();
-    setloading(false);
-    await window.IIRISPassport.getRegistrationForm({
-      containerId: "auth-container",
-      responseType: "code",
-    });
-  }, []);
+    // setloading(false);
+    if (window?.IIRISPassport && typeof window.IIRISPassport.getRegistrationForm === 'function') {
+      try {
+        await window.IIRISPassport.getRegistrationForm({
+          containerId: "auth-container",
+          responseType: "code"
+        });
+      } catch (error) {
+        console.error("❌ Error rendering unified auth form:", error);
+        authContainer.innerHTML = '<div style="color: red; padding: 20px;">Error loading authentication form. Please refresh.</div>';
+      }
+    }
+  }, [window?.IIRISPassport]);
 
   useEffect(() => {
     const handleIrisEvent = (event) => {
