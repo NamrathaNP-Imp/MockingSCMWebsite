@@ -55,21 +55,27 @@ const App = () => {
     }, pollInterval);
   }
 
-  useEffect(async() => {
-    // waitForSDKAndRenderForm();
+  useEffect(() => {
+    waitForSDKAndRenderForm();
     // setloading(false);
-    if (window?.IIRISPassport && typeof window.IIRISPassport.getRegistrationForm === 'function') {
-      try {
-        await window.IIRISPassport.getRegistrationForm({
-          containerId: "auth-container",
-          responseType: "code"
-        });
-      } catch (error) {
-        console.error("❌ Error rendering unified auth form:", error);
-        authContainer.innerHTML = '<div style="color: red; padding: 20px;">Error loading authentication form. Please refresh.</div>';
-      }
-    }
-  }, [window?.IIRISPassport]);
+  }, []);
+
+  //   useEffect(() => {
+  //  async function fetchData() {
+  //     try {
+  //       await window.IIRISPassport.getRegistrationForm({
+  //         containerId: "auth-container",
+  //         responseType: "code"
+  //       });
+  //     } catch (error) {
+  //       console.error("❌ Error rendering unified auth form:", error);
+  //       authContainer.innerHTML = '<div style="color: red; padding: 20px;">Error loading authentication form. Please refresh.</div>';
+  //     }    // ...
+  // }
+  //   if (window.IIRISPassport ) {
+  //     fetchData();
+  //   }
+  // }, [window.IIRISPassport]);
 
   useEffect(() => {
     const handleIrisEvent = (event) => {
@@ -123,16 +129,8 @@ const App = () => {
  
 
   const handleBack = () => {
-    // setLoggedin(false);
     window.location.reload();
   }
-  // useEffect(() => {
-  //   if (isloggedin == false && userName != '') {
-  //     waitForSDKAndRenderForm();
-  //     setUserName('');
-  //   }
-  // }, [isloggedin]);
-
 
   return (
     <div className="container">
