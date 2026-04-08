@@ -89,14 +89,12 @@ const App = () => {
 
   const handleIrisEvent = (data) => {
     const { success, ...logindata } = data;
-    console.log("success--", success, logindata);
     if (success) {
       setToastData({
         show: true,
         message: logindata.message || "User logged in Successfully",
       });
       resetToast();
-      console.log("Detected login response", logindata);
       setLoggedin(true);
       setUserName(logindata.user || '')
     }
@@ -134,7 +132,6 @@ const App = () => {
               console.log("host iirisRegisterCallback!");
               result = data;
               handleIrisEvent(data);
-              // host handles success here
             },
             iirisLoginCallback: (data) => {
               console.log("host iirisLoginCallback!");
@@ -148,7 +145,6 @@ const App = () => {
           });
           setTimeout(async () => {
             if (result && result.data && result.data.token && result.data.token.refresh_token) {
-              console.log("Access Token:", result.data.token.refresh_token);
               const tokenData = await window.IIRISPassport.getRefreshToken().then(token => {
                 console.log("Refresh Token received in host callback after 20s");
               }).catch(error => {
