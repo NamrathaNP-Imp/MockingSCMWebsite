@@ -38,20 +38,20 @@ const App = () => {
           await window.IIRISPassport.getRegistrationForm({
             containerId: "auth-container",
             responseType: "code",
-            irisRegisterCallback: (data) => {
-									console.log("host irisRegisterCallback!", data);
+            iirisRegisterCallback: (data) => {
+									console.log("host iirisRegisterCallback!", data);
 									result = data;
                   handleIrisEvent(data);
 									// host handles success here
 								},
-								irisLoginCallback: (data) => {
-									console.log("host irisLoginCallback!", data);
+								iirisLoginCallback: (data) => {
+									console.log("host iirisLoginCallback!", data);
 									result = data;
                   handleIrisEvent(data);
 								},
-								irisError: (error) => {
-									console.error("host irisErrorCallback!", error);
-									window.IIRISPassport.irisErrorCallback(error)
+								iirisError: (error) => {
+									console.error("host iirisErrorCallback!", error);
+									window.IIRISPassport.iirisErrorCallback(error)
 								}
           });
           setTimeout(async () => {
