@@ -136,7 +136,7 @@ ul {
   /* background: white;
   padding: 25px;
   border: 1px solid #eee; */
-  /* align-content: center; */
+  align-content: center;
   text-align: start;
 }
 .rightLoader{

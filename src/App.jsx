@@ -22,31 +22,122 @@ const App = () => {
       });
     }, 2000);
   }
-  const waitForSDKAndRenderForm = () => {
-    const maxWaitTime = 10000; // 10 seconds
-    const pollInterval = 100; // Check every 100ms
-    let elapsedTime = 0;
-    const authContainer = document.getElementById('auth-container');
-    if (!authContainer) {
-      return;
+  // const waitForSDKAndRenderForm = () => {
+  //   const maxWaitTime = 10000; // 10 seconds
+  //   const pollInterval = 100; // Check every 100ms
+  //   let elapsedTime = 0;
+  //   const authContainer = document.getElementById('auth-container');
+  //   if (!authContainer) {
+  //     return;
+  //   }
+  //   const pollTimer = setInterval(async () => {
+  //     elapsedTime += pollInterval;
+  //     if (window.IIRISPassport && typeof window.IIRISPassport.getRegistrationForm === 'function') {
+  //       clearInterval(pollTimer);
+  //       let result = null;
+  //       try {
+  //         await window.IIRISPassport.getRegistrationForm({
+  //           containerId: "auth-container",
+  //           responseType: "code",
+  //           iirisRegisterCallback: (data) => {
+  //             console.log("host iirisRegisterCallback!", data);
+  //             result = data;
+  //             handleIrisEvent(data);
+  //             // host handles success here
+  //           },
+  //           iirisLoginCallback: (data) => {
+  //             console.log("host iirisLoginCallback!", data);
+  //             result = data;
+  //             handleIrisEvent(data);
+  //           },
+  //           iirisError: (error) => {
+  //             console.error("host iirisErrorCallback!", error);
+  //             window.IIRISPassport.iirisErrorCallback(error)
+  //           }
+  //         });
+  //         setTimeout(async () => {
+  //           if (result && result.data && result.data.token && result.data.token.refresh_token) {
+  //             console.log("Access Token:", result.data.token.refresh_token);
+  //             const tokenData = await window.IIRISPassport.getRefreshToken().then(token => {
+  //               console.log("Refresh Token received in host callback after 20s");
+  //             }).catch(error => {
+  //               console.error("Error getting refresh token:", error);
+  //             });
+  //           } else {
+  //             console.warn("Result or access token not available yet:", result);
+  //           }
+  //         }, 20000);
+  //         setloading(false);
+  //       } catch (error) {
+  //         console.error("❌ Error rendering unified auth form:", error);
+  //         authContainer.innerHTML = '<div style="color: red; padding: 20px;">Error loading authentication form. Please refresh.</div>';
+  //         setloading(false);
+  //       }
+  //       return;
+  //     }
+  //     if (elapsedTime >= maxWaitTime) {
+  //       clearInterval(pollTimer);
+  //       authContainer.innerHTML = '<div style="color: red; padding: 20px;">Authentication form failed to load. Please refresh the page.</div>';
+  //       setloading(false);
+  //     }
+  //   }, pollInterval);
+  // }
+
+  // useEffect(() => {
+  //   waitForSDKAndRenderForm();
+  // }, []);
+
+  const handleIrisEvent = (data) => {
+    const { success, ...logindata } = data;
+    console.log("success--", success, logindata);
+    if (success) {
+      setToastData({
+        show: true,
+        message: logindata.message || "User logged in Successfully",
+      });
+      resetToast();
+      console.log("Detected login response", logindata);
+      setLoggedin(true);
+      setUserName(logindata.user || '')
     }
-    const pollTimer = setInterval(async () => {
-      elapsedTime += pollInterval;
+    else {
+      setToastData({
+        show: true,
+        message: logindata.error?.message,
+      });
+      resetToast();
+    }
+  };
+  
+  useEffect(() => {
+    setTimeout(async () => {
+      const authContainer = document.getElementById('auth-container');
+      if (!authContainer) {
+        console.error("Auth container not found");
+        return;
+      }
+      if (window.IIRISPassport && typeof window.IIRISPassport.iirisReadyCallback === 'function') {
+        window.IIRISPassport.iirisReadyCallback().then((data) => {
+          console.log("IIRIS Passport SDK is ready!,Host iirisReadyCallback" );
+        }).catch((error) => {
+          console.error("Error waiting for IIRIS Passport SDK to be ready:", error);
+        });
+      }
+
       if (window.IIRISPassport && typeof window.IIRISPassport.getRegistrationForm === 'function') {
-        clearInterval(pollTimer);
         let result = null;
         try {
           await window.IIRISPassport.getRegistrationForm({
             containerId: "auth-container",
             responseType: "code",
             iirisRegisterCallback: (data) => {
-              console.log("host iirisRegisterCallback!", data);
+              console.log("host iirisRegisterCallback!");
               result = data;
               handleIrisEvent(data);
               // host handles success here
             },
             iirisLoginCallback: (data) => {
-              console.log("host iirisLoginCallback!", data);
+              console.log("host iirisLoginCallback!");
               result = data;
               handleIrisEvent(data);
             },
@@ -59,72 +150,23 @@ const App = () => {
             if (result && result.data && result.data.token && result.data.token.refresh_token) {
               console.log("Access Token:", result.data.token.refresh_token);
               const tokenData = await window.IIRISPassport.getRefreshToken().then(token => {
-                console.log("Refresh Token:", token);
+                console.log("Refresh Token received in host callback after 20s");
               }).catch(error => {
                 console.error("Error getting refresh token:", error);
               });
-              console.log(tokenData)
             } else {
               console.warn("Result or access token not available yet:", result);
             }
-          }, 10000);
+          }, 20000);
           setloading(false);
         } catch (error) {
           console.error("❌ Error rendering unified auth form:", error);
           authContainer.innerHTML = '<div style="color: red; padding: 20px;">Error loading authentication form. Please refresh.</div>';
           setloading(false);
         }
-        return;
       }
-      if (elapsedTime >= maxWaitTime) {
-        clearInterval(pollTimer);
-        authContainer.innerHTML = '<div style="color: red; padding: 20px;">Authentication form failed to load. Please refresh the page.</div>';
-        setloading(false);
-      }
-    }, pollInterval);
-  }
-
-  useEffect(() => {
-    waitForSDKAndRenderForm();
+    }, 2000);
   }, []);
-
-   const handleIrisEvent = (data) => {
-       const { success, ...logindata } = data;
-        console.log("success--",  success, logindata);
-        if (success){
-        setToastData({
-          show: true,
-          message: logindata.message || "User logged in Successfully",
-        });
-        resetToast();
-        console.log("Detected login response", logindata);
-        setLoggedin(true);
-        setUserName(logindata.user || '')
-        } 
-        else{
-          setToastData({
-          show: true,
-          message: logindata.error?.message ,
-        });
-        resetToast();
-        } 
-    };
-  //   useEffect(() => {
-  //  async function fetchData() {
-  //     try {
-  //       await window.IIRISPassport.getRegistrationForm({
-  //         containerId: "auth-container",
-  //         responseType: "code"
-  //       });
-  //     } catch (error) {
-  //       console.error("❌ Error rendering unified auth form:", error);
-  //       authContainer.innerHTML = '<div style="color: red; padding: 20px;">Error loading authentication form. Please refresh.</div>';
-  //     }    // ...
-  // }
-  //   if (window.IIRISPassport ) {
-  //     fetchData();
-  //   }
-  // }, []);
 
 
   const handleBack = () => {
