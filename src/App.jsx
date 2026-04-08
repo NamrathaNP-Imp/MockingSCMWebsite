@@ -34,25 +34,26 @@ const App = () => {
       elapsedTime += pollInterval;
       if (window.IIRISPassport && typeof window.IIRISPassport.getRegistrationForm === 'function') {
         clearInterval(pollTimer);
+        let result = null;
         try {
           await window.IIRISPassport.getRegistrationForm({
             containerId: "auth-container",
             responseType: "code",
             iirisRegisterCallback: (data) => {
-									console.log("host iirisRegisterCallback!", data);
-									result = data;
-                  handleIrisEvent(data);
-									// host handles success here
-								},
-								iirisLoginCallback: (data) => {
-									console.log("host iirisLoginCallback!", data);
-									result = data;
-                  handleIrisEvent(data);
-								},
-								iirisError: (error) => {
-									console.error("host iirisErrorCallback!", error);
-									window.IIRISPassport.iirisErrorCallback(error)
-								}
+              console.log("host iirisRegisterCallback!", data);
+              result = data;
+              handleIrisEvent(data);
+              // host handles success here
+            },
+            iirisLoginCallback: (data) => {
+              console.log("host iirisLoginCallback!", data);
+              result = data;
+              handleIrisEvent(data);
+            },
+            iirisError: (error) => {
+              console.error("host iirisErrorCallback!", error);
+              window.IIRISPassport.iirisErrorCallback(error)
+            }
           });
           setTimeout(async () => {
             if (result && result.data && result.data.token && result.data.token.refresh_token) {
@@ -148,13 +149,6 @@ const App = () => {
   //   }
   // }, []);
 
-  // useEffect(() => {
-   
- 
-  //   window.addEventListener("irisAuthEvent", handleIrisEvent);
-  //   return () => window.removeEventListener("irisAuthEvent", handleIrisEvent);
-  // }, []);
- 
 
   const handleBack = () => {
     window.location.reload();
