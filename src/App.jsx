@@ -5,7 +5,7 @@ import { Snackbar } from '@mui/material';
 import Dashboard from './Dashboard';
 
 const App = () => {
-  const [loading, setloading] = useState(false);
+  const [loading, setloading] = useState(true);
   const [isloggedin, setLoggedin] = useState(false);
   const [userName, setUserName] = useState('');
   const [showToast, setToastData] = useState({
@@ -37,8 +37,36 @@ const App = () => {
         try {
           await window.IIRISPassport.getRegistrationForm({
             containerId: "auth-container",
-            responseType: "code"
+            responseType: "code",
+            irisRegisterCallback: (data) => {
+									console.log("host irisRegisterCallback!", data);
+									result = data;
+                  handleIrisEvent(data);
+									// host handles success here
+								},
+								irisLoginCallback: (data) => {
+									console.log("host irisLoginCallback!", data);
+									result = data;
+                  handleIrisEvent(data);
+								},
+								irisError: (error) => {
+									console.error("host irisErrorCallback!", error);
+									window.IIRISPassport.irisErrorCallback(error)
+								}
           });
+          setTimeout(async () => {
+            if (result && result.data && result.data.token && result.data.token.refresh_token) {
+              console.log("Access Token:", result.data.token.refresh_token);
+              const tokenData = await window.IIRISPassport.getRefreshToken().then(token => {
+                console.log("Refresh Token:", token);
+              }).catch(error => {
+                console.error("Error getting refresh token:", error);
+              });
+              console.log(tokenData)
+            } else {
+              console.warn("Result or access token not available yet:", result);
+            }
+          }, 10000);
           setloading(false);
         } catch (error) {
           console.error("❌ Error rendering unified auth form:", error);
@@ -57,28 +85,9 @@ const App = () => {
 
   useEffect(() => {
     waitForSDKAndRenderForm();
-    // setloading(false);
   }, []);
 
-  //   useEffect(() => {
-  //  async function fetchData() {
-  //     try {
-  //       await window.IIRISPassport.getRegistrationForm({
-  //         containerId: "auth-container",
-  //         responseType: "code"
-  //       });
-  //     } catch (error) {
-  //       console.error("❌ Error rendering unified auth form:", error);
-  //       authContainer.innerHTML = '<div style="color: red; padding: 20px;">Error loading authentication form. Please refresh.</div>';
-  //     }    // ...
-  // }
-  //   if (window.IIRISPassport ) {
-  //     fetchData();
-  //   }
-  // }, [window.IIRISPassport]);
-
-  useEffect(() => {
-    const handleIrisEvent = (event) => {
+   const handleIrisEvent = (event) => {
       if (event.detail.type === "login") {
         const { success, ...logindata } = event.detail.payload;
         console.log("success--",  event.detail, success, logindata);
@@ -122,10 +131,29 @@ const App = () => {
         } 
       }
     };
+  //   useEffect(() => {
+  //  async function fetchData() {
+  //     try {
+  //       await window.IIRISPassport.getRegistrationForm({
+  //         containerId: "auth-container",
+  //         responseType: "code"
+  //       });
+  //     } catch (error) {
+  //       console.error("❌ Error rendering unified auth form:", error);
+  //       authContainer.innerHTML = '<div style="color: red; padding: 20px;">Error loading authentication form. Please refresh.</div>';
+  //     }    // ...
+  // }
+  //   if (window.IIRISPassport ) {
+  //     fetchData();
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+   
  
-    window.addEventListener("irisAuthEvent", handleIrisEvent);
-    return () => window.removeEventListener("irisAuthEvent", handleIrisEvent);
-  }, []);
+  //   window.addEventListener("irisAuthEvent", handleIrisEvent);
+  //   return () => window.removeEventListener("irisAuthEvent", handleIrisEvent);
+  // }, []);
  
 
   const handleBack = () => {
