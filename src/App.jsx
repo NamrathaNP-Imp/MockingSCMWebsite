@@ -88,19 +88,18 @@ const App = () => {
     waitForSDKAndRenderForm();
   }, []);
 
-   const handleIrisEvent = (event) => {
-      if (event.detail.type === "login") {
-        const { success, ...logindata } = event.detail.payload;
-        console.log("success--",  event.detail, success, logindata);
+   const handleIrisEvent = (data) => {
+       const { success, ...logindata } = data;
+        console.log("success--",  success, logindata);
         if (success){
         setToastData({
           show: true,
-          message: logindata.data?.message || "User logged in Successfully",
+          message: logindata.message || "User logged in Successfully",
         });
         resetToast();
         console.log("Detected login response", logindata);
         setLoggedin(true);
-        setUserName(logindata.data?.user || '')
+        setUserName(logindata.user || '')
         } 
         else{
           setToastData({
@@ -109,28 +108,6 @@ const App = () => {
         });
         resetToast();
         } 
-      }
-      else if (event.detail.type === "signup") {
-        const { success, ...signupdata } = event.detail.payload;
-        console.log("success--",  event.detail, success, signupdata);
-        if (success){
-        setToastData({
-          show: true,
-          message: signupdata.data?.message || "User signed in Successfully",
-        });
-        resetToast();
-        console.log("Detected signin response", signupdata);
-        setLoggedin(true);
-        setUserName(signupdata.data?.user || '')
-        } 
-        else{
-          setToastData({
-          show: true,
-          message: signupdata.error?.message ,
-        });
-        resetToast();
-        } 
-      }
     };
   //   useEffect(() => {
   //  async function fetchData() {
