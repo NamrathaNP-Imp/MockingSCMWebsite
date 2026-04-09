@@ -121,6 +121,10 @@ const App = () => {
           console.error("Error waiting for IIRIS Passport SDK to be ready:", error);
         });
       }
+      else{
+        setloading(false);
+        authContainer.innerHTML = '<div style="color: red; padding: 20px;">Authentication form failed to load. Please refresh the page.</div>';
+      }
 
       if (window.IIRISPassport && typeof window.IIRISPassport.getRegistrationForm === 'function') {
         let result = null;
