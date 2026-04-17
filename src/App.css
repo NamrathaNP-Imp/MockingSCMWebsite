@@ -1,4 +1,4 @@
-#root {
+/* #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0rem 2rem;
@@ -39,4 +39,145 @@
 
 .read-the-docs {
   color: #888;
+} */
+
+/**
+ * AuthForms CSS Overrides
+ * 
+ * This file centralizes all styling for the AuthForms module.
+ * 
+ * All MUI component styles are overridden here for a consistent look and feel.
+ */
+
+/* .iiris-sdk-form-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+} */
+
+/* .iiris-sdk-input-field-label {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 125%;
+  letter-spacing: 0%;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+} */
+
+.iiris-sdk-input-group{
+  /* transition: box-shadow 0.2s ease, border-color 0.2s ease; */
 }
+
+.iiris-sdk-input-group:focus-within {
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); /* adjust color as needed */
+  border-color: #007bff; /* optional: highlight border */
+}
+
+.iiris-sdk-input-field {
+  /* width: 100%;
+  height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px; */
+  /* color:#495057 !important;
+  border-color:#80bdff !important; */
+}
+/* .iiris-sdk-input-field:focus {
+  border-color: #80bdff !important;
+  box-shadow: 0 0 0 .2rem rgba(0, 123, 255, 0.25) !important;
+  outline: none;
+} */
+
+/* .iiris-sdk-input-field:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+} */
+
+.iiris-sdk-error-text {
+  /* color: red; */
+  font-size: 10px !important;
+  /* margin-top: 4px; */
+}
+/* .iiris-sdk-hint-text{
+  color: #777;
+  text-align: center;
+  font-size: 13px;
+  margin: 1rem 0rem;
+}
+.iiris-sdk-hint-email{
+  color: #2d7b33;
+  font-weight: 500;
+}
+.iiris-sdk-toggle-password {
+  position: absolute;
+  right: 4rem;
+  font-size: 14px;
+  z-Index: 5555;
+}
+
+.iiris-sdk-link-container {
+  text-align: right;
+  margin-bottom: 12px;
+} */
+
+
+.iiris-sdk-submit-btn {
+  /* width: 100%;
+  height: 40px;
+  border-radius: 20px;
+  background-color: #000;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer; */
+  color:#212529 !important;
+  background-color:#ffc107 !important;
+  border-color:#ffc107 !important;
+}
+
+.iiris-sdk-submit-btn:hover {
+  /* background-color: #111; */
+    background-color:#ffc107 !important;
+}
+
+/* .iiris-sdk-submit-btn:disabled {
+  background-color: #777;
+  cursor: not-allowed;
+}
+.iiris-sdk-authform-layout {
+  width: 344px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 16px;
+}
+.iiris-sdk-loginform {
+  display: flex;
+  flex-direction: column; 
+} */
+/* .iiris-sdk-btn-link{
+  margin:0px;
+  color:#007bff;
+  cursor: pointer;
+  text-decoration:none
+}
+.iiris-sdk-btn-link:hover{
+  color:#0056b3;
+  text-decoration:underline
+}
+.iiris-sdk-btn-link.focus,.iiris-sdk-btn-link:focus{
+  text-decoration:underline
+}
+.iiris-sdk-btn-link.disabled,.iiris-sdk-btn-link:disabled{
+  color:#6c757d;
+  pointer-events:none
+} */
+/* .iiris-sdk-btn-container{
+
+}
+.iiris-sdk-form-container{
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+} */
