@@ -175,6 +175,10 @@ button {
   .layout {
     flex-direction: column;
   }
+  .container {
+    margin: auto;
+    padding: 0px 20px;
+  }
 
   .right {
     width: 100%;
