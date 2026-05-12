@@ -215,17 +215,17 @@ const App = () => {
 
               <div className="speakers">
                 <div className="speaker">
-                  <img src="https://i.pravatar.cc/100?img=1" />
+                  <img src="https://www.loremfaces.net/96/id/1.jpg" />
                   <p>Jamie Starner</p>
                 </div>
 
                 <div className="speaker">
-                  <img src="https://i.pravatar.cc/100?img=2" />
+                  <img src="https://www.loremfaces.net/96/id/2.jpg" />
                   <p>Emily Hancock</p>
                 </div>
 
                 <div className="speaker">
-                  <img src="https://i.pravatar.cc/100?img=3" />
+                  <img src="https://www.loremfaces.net/96/id/3.jpg" />
                   <p>Leigh Anne</p>
                 </div>
               </div>
