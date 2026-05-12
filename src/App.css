@@ -135,10 +135,15 @@
   color:#212529 !important;
   background-color:#ffc107 !important;
   border-color:#ffc107 !important;
+  outline: none;
 }
 
 .iiris-sdk-submit-btn:hover {
-  /* background-color: #111; */
+    background-color:#ffc107 !important;
+    outline: none;
+}
+.iiris-sdk-submit-btn:focus {
+    outline: none;
     background-color:#ffc107 !important;
 }
 
